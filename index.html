@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es" data-tema="oscuro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Franyer Pérez · Ciencias de la Computación · UCV</title>
+<meta name="description" content="Portafolio de Franyer Pérez: redes de computadoras, bases de datos, programación, estructuras de datos y desarrollo de videojuegos.">
+<style>
+  :root {
+    --fondo: #0a0e18;
+    --grad-1: #1d2c59;
+    --grad-2: #0e3b3b;
+    --superficie: #111829;
+    --superficie2: #172139;
+    --borde: #222f4c;
+    --texto: #e8edf7;
+    --secundario: #98a6c2;
+    --acento: #7c9cff;
+    --acento2: #3ee0c4;
+    --barra: rgba(10, 14, 24, 0.80);
+    --captura: #0d1322;
+    --tag-bg: rgba(124, 156, 255, 0.14);
+    --tag-texto: #c3d4ff;
+    --sombra: rgba(0, 0, 0, 0.45);
+    --texto-principal: #071018;
+  }
+  [data-tema="claro"] {
+    --fondo: #f5f7fc;
+    --grad-1: #dbe5ff;
+    --grad-2: #d4f5ee;
+    --superficie: #ffffff;
+    --superficie2: #eef2fb;
+    --borde: #d6dded;
+    --texto: #0f1728;
+    --secundario: #4b5876;
+    --acento: #3556d6;
+    --acento2: #0b9c86;
+    --barra: rgba(245, 247, 252, 0.88);
+    --captura: #eef2fb;
+    --tag-bg: rgba(53, 86, 214, 0.10);
+    --tag-texto: #2a45a8;
+    --sombra: rgba(20, 30, 60, 0.14);
+    --texto-principal: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: radial-gradient(1100px 560px at 8% -8%, var(--grad-1) 0%, transparent 60%),
+                radial-gradient(860px 480px at 105% 12%, var(--grad-2) 0%, transparent 55%),
+                var(--fondo);
+    color: var(--texto); line-height: 1.6; min-height: 100vh;
+    transition: background-color .3s ease, color .3s ease;
+  }
+  a { color: var(--acento); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  img { display: block; max-width: 100%; }
+  .contenedor { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+  .gradiente {
+    background: linear-gradient(90deg, var(--acento), var(--acento2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  /* Barra superior */
+  header.barra {
+    position: sticky; top: 0; z-index: 20; backdrop-filter: blur(12px);
+    background: var(--barra); border-bottom: 1px solid var(--borde);
+  }
+  .barra .contenedor { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 62px; }
+  .logo { font-weight: 800; font-size: 18px; color: var(--texto); }
+  .logo:hover { text-decoration: none; }
+  .menu { display: flex; align-items: center; }
+  .menu a { color: var(--secundario); margin-left: 22px; font-size: 14px; }
+  .menu a:hover { color: var(--texto); text-decoration: none; }
+  .acciones { display: flex; align-items: center; gap: 10px; }
+  .boton-mini {
+    background: transparent; color: var(--texto); border: 1px solid var(--borde);
+    border-radius: 999px; padding: 6px 13px; cursor: pointer; font-size: 13px;
+  }
+  .btn-cv-mini {
+    padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600;
+    background: linear-gradient(90deg, var(--acento), var(--acento2)); color: #071018; white-space: nowrap;
+  }
+  .btn-cv-mini:hover { text-decoration: none; filter: brightness(1.08); }
+
+  /* Portada */
+  .portada { padding: 80px 0 64px; display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; align-items: center; }
+  .etiqueta {
+    display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--acento2);
+    border: 1px solid rgba(62, 224, 196, 0.35); border-radius: 999px; padding: 5px 13px; margin-bottom: 20px;
+    background: rgba(62, 224, 196, 0.07);
+  }
+  .etiqueta::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--acento2); box-shadow: 0 0 0 4px rgba(62,224,196,.2); }
+  h1 { font-size: clamp(40px, 6vw, 64px); line-height: 1.04; letter-spacing: -1.2px; margin-bottom: 14px; }
+
+  .rotador-wrap { height: 44px; margin-bottom: 26px; display: flex; align-items: center; }
+  .rotador {
+    font-size: clamp(19px, 2.4vw, 24px); font-weight: 600;
+    background: linear-gradient(90deg, var(--acento), var(--acento2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    transition: opacity .35s ease, transform .35s ease; display: inline-block;
+  }
+  .rotador.salida { opacity: 0; transform: translateY(8px); }
+
+  .botones { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 12px; font-weight: 600; font-size: 15px;
+    border: 1px solid var(--borde); color: var(--texto); background: var(--superficie);
+    transition: border-color .2s, transform .2s;
+  }
+  .btn:hover { text-decoration: none; border-color: var(--acento); transform: translateY(-2px); }
+  .btn.principal { background: linear-gradient(90deg, var(--acento), var(--acento2)); color: var(--texto-principal); border: none; }
+  .icono-btn {
+    width: 46px; height: 46px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center;
+    border: 1px solid var(--borde); background: var(--superficie); color: var(--texto); transition: border-color .2s, transform .2s;
+  }
+  .icono-btn:hover { border-color: var(--acento); transform: translateY(-2px); text-decoration: none; }
+  .icono-btn svg { width: 20px; height: 20px; fill: currentColor; }
+  .icono-btn svg.trazo { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Tarjeta de la foto */
+  .foto-card {
+    background: var(--superficie); border: 1px solid var(--borde); border-radius: 28px; padding: 18px;
+    max-width: 380px; width: 100%; margin: 0 auto; box-shadow: 0 30px 80px var(--sombra);
+  }
+  .foto-wrap {
+    position: relative; width: 100%; aspect-ratio: 4 / 5; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(135deg, var(--superficie2), var(--superficie));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .foto-wrap .iniciales { font-size: 88px; font-weight: 800; color: rgba(128,140,170,.25); }
+  .foto-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .foto-chip {
+    position: absolute; left: 12px; right: 12px; bottom: 12px; background: var(--barra);
+    border: 1px solid var(--borde); border-radius: 14px; padding: 10px 14px; backdrop-filter: blur(8px);
+  }
+  .foto-chip strong { display: block; font-size: 15px; }
+  .foto-chip span { font-size: 13px; color: var(--secundario); }
+  .disponible { text-align: center; margin: 16px 0 12px; font-size: 14px; color: var(--acento2); font-weight: 600; }
+  .disponible::before { content: "● "; }
+  .logos { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .logo-skill {
+    display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 10px;
+    background: var(--superficie2); border: 1px solid var(--borde); font-size: 13px; color: var(--texto);
+  }
+  .logo-skill img { width: 18px; height: 18px; }
+  .logo-skill svg { width: 18px; height: 18px; color: var(--acento2); flex-shrink: 0; }
+
+  /* Secciones */
+  section { padding: 70px 0; }
+  section[id], div[id] { scroll-margin-top: 90px; }
+  .encabezado-seccion { margin-bottom: 36px; }
+  .etiq-sec { font-size: 13px; color: var(--acento2); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; display: block; }
+  section h2 { font-size: clamp(28px, 4vw, 38px); letter-spacing: -.8px; margin-bottom: 10px; }
+  .descripcion { font-size: 18px; color: var(--secundario); max-width: 760px; }
+  .sobre-mi { padding-top: 20px; padding-bottom: 40px; }
+
+  /* Proyectos */
+  .rejilla { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 22px; }
+  .tarjeta {
+    background: var(--superficie); border: 1px solid var(--borde); border-radius: 20px; overflow: hidden;
+    display: flex; flex-direction: column; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  .tarjeta:hover { transform: translateY(-5px); border-color: var(--acento); box-shadow: 0 24px 60px var(--sombra); }
+  .tarjeta .captura {
+    height: 220px; background: var(--captura); border-bottom: 1px solid var(--borde);
+    display: flex; align-items: center; justify-content: center; padding: 12px;
+  }
+  .tarjeta .captura img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 8px; }
+  .tarjeta .captura.sin-imagen { background: linear-gradient(135deg, var(--superficie2), var(--captura)); }
+  .tarjeta .cuerpo { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
+  .tarjeta .anio { font-size: 12px; color: var(--acento2); margin-bottom: 6px; }
+  .tarjeta h3 { font-size: 19px; margin-bottom: 10px; line-height: 1.3; }
+  .tarjeta p { color: var(--secundario); font-size: 15px; flex-grow: 1; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 14px; }
+  .tags span { font-size: 12px; padding: 3px 9px; border-radius: 6px; background: var(--tag-bg); color: var(--tag-texto); }
+  .enlace-app { font-weight: 600; font-size: 14px; }
+
+  /* Arsenal técnico */
+  .arsenal { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .bloque { background: var(--superficie); border: 1px solid var(--borde); border-radius: 18px; padding: 24px; }
+  .bloque h3 { font-size: 17px; margin-bottom: 4px; }
+  .bloque > p { color: var(--secundario); font-size: 14px; margin-bottom: 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 6px 13px; border-radius: 999px; border: 1px solid var(--borde); background: var(--superficie2); font-size: 13px; color: var(--texto); }
+
+
+  .bloque-cabecera { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .bloque-cabecera h3 { margin: 0; }
+  .icono-caja {
+    width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+    background: var(--superficie2); border: 1px solid var(--borde);
+    display: inline-flex; align-items: center; justify-content: center; color: var(--acento2);
+  }
+  .icono-caja svg { width: 22px; height: 22px; }
+
+  /* Formación & Certificaciones */
+  .linea-tiempo { border-left: 2px solid var(--borde); padding-left: 28px; margin-left: 6px; }
+  .linea-tiempo .item { position: relative; margin-bottom: 30px; }
+  .linea-tiempo .item::before {
+    content: ""; position: absolute; left: -36px; top: 7px; width: 14px; height: 14px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--acento), var(--acento2)); box-shadow: 0 0 0 5px rgba(62,224,196,.14);
+  }
+  .linea-tiempo h3 { font-size: 18px; }
+  .linea-tiempo .meta { color: var(--acento2); font-size: 13px; margin: 2px 0 6px; }
+  .linea-tiempo p { color: var(--secundario); font-size: 15px; }
+
+
+  .subbloque { margin-bottom: 34px; }
+  .sub-etiqueta {
+    display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
+    color: var(--texto); border: 1px solid var(--borde); border-radius: 999px; padding: 6px 14px; margin-bottom: 18px;
+    background: var(--superficie2);
+  }
+  .descripcion-formacion { color: var(--secundario); font-size: 15px; margin-top: 10px; max-width: 720px; }
+  .lista-base { list-style: disc; padding-left: 20px; color: var(--secundario); font-size: 15px; margin-top: 10px; display: grid; gap: 4px; }
+  .lista-base li::marker { color: var(--acento2); }
+
+
+  /* Contacto */
+  .titulo-contacto { max-width: 820px; margin: 0 auto 14px; }
+  .etiquetas-contacto { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 18px 0 14px; }
+  .ubicacion-contacto { color: var(--secundario); font-size: 14px; margin-bottom: 26px; }
+  .contacto-botones .btn { display: inline-flex; align-items: center; gap: 8px; }
+  button.btn { cursor: pointer; font-family: inherit; font-size: 15px; }
+  .contacto-botones svg { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
+  .contacto-botones svg.trazo { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .contacto { text-align: center; }
+  .contacto .descripcion { margin: 0 auto 26px; }
+  .botones.centro { justify-content: center; }
+  footer { border-top: 1px solid var(--borde); padding: 26px 0; color: var(--secundario); font-size: 13px; text-align: center; }
+
+
+  /* Tarjetas de proyecto (versión resumida) */
+  .tarjeta .captura { cursor: pointer; }
+  .tarjeta .cuerpo p { margin-bottom: 4px; }
+  .btn-detalles {
+    margin-top: 16px; align-self: flex-start; background: transparent; color: var(--acento);
+    border: 1px solid var(--acento); border-radius: 10px; padding: 9px 16px; font-weight: 600; font-size: 14px; cursor: pointer;
+    transition: background .2s, color .2s;
+  }
+  .btn-detalles:hover { background: var(--acento); color: var(--texto-principal); }
+
+  /* Ventana de detalles */
+  .modal {
+    position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center;
+    background: rgba(5, 8, 15, 0.72); backdrop-filter: blur(6px); padding: 20px;
+  }
+  .modal.abierto { display: flex; }
+  .modal-caja {
+    background: var(--superficie); border: 1px solid var(--borde); border-radius: 22px;
+    width: 100%; max-width: 860px; max-height: 92vh; overflow-y: auto; position: relative;
+    box-shadow: 0 40px 100px rgba(0,0,0,.5);
+  }
+  .modal-cerrar {
+    position: absolute; top: 12px; right: 12px; z-index: 2; width: 38px; height: 38px; border-radius: 50%;
+    border: 1px solid var(--borde); background: var(--barra); color: var(--texto); font-size: 20px; cursor: pointer;
+  }
+  .carrusel { position: relative; background: var(--captura); border-radius: 22px 22px 0 0; overflow: hidden; }
+  .carrusel-vista { height: 380px; display: flex; align-items: center; justify-content: center; padding: 18px; }
+  .carrusel-vista img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; }
+  .carrusel-flecha {
+    position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border-radius: 50%;
+    border: 1px solid var(--borde); background: var(--barra); color: var(--texto); font-size: 22px; cursor: pointer;
+  }
+  .carrusel-flecha.izq { left: 12px; }
+  .carrusel-flecha.der { right: 12px; }
+  .carrusel-pie { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; }
+  .carrusel-punto { width: 9px; height: 9px; border-radius: 50%; border: none; background: var(--borde); cursor: pointer; }
+  .carrusel-punto.activo { background: var(--acento2); }
+  .carrusel-contador { font-size: 12px; color: var(--secundario); margin-left: 8px; }
+  .modal-cuerpo { padding: 26px 30px 30px; }
+  .modal-cuerpo h3 { font-size: 26px; letter-spacing: -.5px; margin-bottom: 4px; }
+  .modal-cuerpo .anio { font-size: 13px; color: var(--acento2); margin-bottom: 18px; display: block; }
+  .modal-cuerpo h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.3px; color: var(--acento2); margin: 22px 0 10px; }
+  .modal-cuerpo .problema { color: var(--secundario); font-size: 15px; }
+  .lista-herramientas { list-style: none; display: grid; gap: 10px; }
+  .lista-herramientas li {
+    background: var(--superficie2); border: 1px solid var(--borde); border-radius: 12px; padding: 10px 14px; font-size: 14px;
+  }
+  .lista-herramientas strong { color: var(--texto); }
+  .lista-herramientas span { color: var(--secundario); }
+  .lista-decisiones { padding-left: 20px; color: var(--secundario); font-size: 15px; display: grid; gap: 8px; }
+  .lista-decisiones li::marker { color: var(--acento2); }
+  .modal-enlace { display: inline-block; margin-top: 22px; font-weight: 600; }
+  .modal-nota { font-size: 13px; color: var(--secundario); margin-top: 6px; }
+
+  /* Idioma */
+  body.en .es { display: none !important; }
+  body:not(.en) .en { display: none !important; }
+
+  @media (max-width: 860px) {
+    .portada { grid-template-columns: 1fr; padding-top: 44px; gap: 36px; }
+    .foto-card { max-width: 320px; }
+    .menu { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rotador { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="barra">
+  <div class="contenedor">
+    <a class="logo" href="#inicio">FP<span class="gradiente">.</span></a>
+    <nav class="menu">
+      <a href="#sobre-mi"><span class="es">Sobre mí</span><span class="en">About</span></a>
+      <a href="#proyectos"><span class="es">Proyectos</span><span class="en">Projects</span></a>
+      <a href="#habilidades"><span class="es">Arsenal técnico</span><span class="en">Tech stack</span></a>
+      <a href="#trayectoria"><span class="es">Trayectoria</span><span class="en">Background</span></a>
+      <a href="#contacto"><span class="es">Contacto</span><span class="en">Contact</span></a>
+    </nav>
+    <div class="acciones">
+      <button class="boton-mini" id="cambiar-tema" type="button" aria-label="Cambiar modo claro u oscuro">☀︎ / ☾</button>
+      <button class="boton-mini" id="cambiar-idioma" type="button">EN / ES</button>
+      <a class="btn-cv-mini" href="CV_Franyer_Perez.pdf" download="CV Franyer Pérez.pdf"><span class="es">Descargar CV</span><span class="en">Download CV</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="contenedor">
+
+  <!-- Portada -->
+  <div class="portada" id="inicio">
+    <div>
+      <span class="etiqueta">
+        <span class="es">Disponible para pasantías, nuevos retos y seguir aprendiendo</span>
+        <span class="en">Open to internships, new challenges and continuous learning</span>
+      </span>
+      <h1>
+        <span class="es">Hola, soy <span class="gradiente">Franyer Pérez</span></span>
+        <span class="en">Hi, I'm <span class="gradiente">Franyer Pérez</span></span>
+      </h1>
+      <div class="rotador-wrap">
+        <span class="rotador" id="rotador">Ciberseguridad &amp; Cifrado de Datos</span>
+      </div>
+      <div class="botones">
+        <a class="btn principal" href="#proyectos"><span class="es">Ver proyectos</span><span class="en">View projects</span></a>
+        <a class="btn boton-cv" href="CV_Franyer_Perez.pdf" download="CV Franyer Pérez.pdf"><span class="es">Descargar CV</span><span class="en">Download CV</span></a>
+        <a class="icono-btn" href="https://github.com/FranyerP07" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.723-1.335-1.723-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.823 2.809 1.297 3.495.993.108-.776.417-1.297.76-1.596-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.216.682.825.566C20.565 21.917 24 17.499 24 12.292 24 5.78 18.627.5 12 .5z"/></svg>
+        </a>
+        <a class="icono-btn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=franyerrioss007@gmail.com" target="_blank" rel="noopener" aria-label="Enviar correo">
+          <svg class="trazo" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="foto-card">
+      <div class="foto-wrap">
+        <span class="iniciales">FP</span>
+        <img src="img/foto.jpg" alt="Franyer Pérez" onerror="this.remove()">
+        <div class="foto-chip">
+          <strong>Franyer Pérez</strong>
+          <span><span class="es">Caracas, Venezuela • Ciencias de la Computación UCV</span><span class="en">Caracas, Venezuela • Computer Science, UCV</span></span>
+        </div>
+      </div>
+      <p class="disponible">
+        <span class="es">Disponible para nuevos retos en el área</span>
+        <span class="en">Available for new challenges in the field</span>
+      </p>
+      <div class="logos">
+        <span class="logo-skill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><span><span class="es">Base de datos</span><span class="en">Databases</span></span></span>
+        <span class="logo-skill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M12 7.5v4M12 11.5l-5 5M12 11.5l5 5"/></svg><span><span class="es">Redes</span><span class="en">Networks</span></span></span>
+        <span class="logo-skill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span><span class="es">Seguridad</span><span class="en">Security</span></span></span>
+        <span class="logo-skill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 7 3 12 8 17"/><polyline points="16 7 21 12 16 17"/><line x1="14" y1="4" x2="10" y2="20"/></svg><span><span class="es">Programación</span><span class="en">Programming</span></span></span>
+        <span class="logo-skill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="10" rx="5"/><path d="M7 12h4M9 10v4M15 13h.01M17 11h.01"/></svg><span><span class="es">Desarrollo de juegos</span><span class="en">Game development</span></span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sobre mí -->
+  <section id="sobre-mi" class="sobre-mi">
+    <div class="encabezado-seccion">
+      <span class="etiq-sec"><span class="es">Sobre mí</span><span class="en">About me</span></span>
+    </div>
+    <p class="descripcion">
+      <span class="es">Estudiante de Ciencias de la Computación en la Universidad Central de Venezuela, con experiencia práctica en redes de computadoras y conocimiento parcial en seguridad y cifrado de datos. Combino el manejo de bases de datos relacionales con el desarrollo de programas en distintos lenguajes, y también desarrollo videojuegos, donde aplico lógica, estructuras de datos y diseño de sistemas.</span>
+      <span class="en">Computer Science student at Universidad Central de Venezuela, with hands-on experience in computer networks and partial knowledge of security and data encryption. I combine relational database management with programming in several languages, and I also develop video games, where I apply logic, data structures and system design.</span>
+    </p>
+  </section>
+
+  <!-- Proyectos -->
+  <section id="proyectos">
+    <div class="encabezado-seccion">
+      <span class="etiq-sec"><span class="es">Portafolio</span><span class="en">Portfolio</span></span>
+      <h2><span class="es">Proyectos</span><span class="en">Projects</span></h2>
+    </div>
+
+    <div class="rejilla">
+      <article class="tarjeta">
+        <div class="captura" data-abrir="netflix"><img src="img/netflix-resumen.png" alt="Catálogo de Netflix con Streamlit"></div>
+        <div class="cuerpo">
+          <span class="anio">2026</span>
+          <h3><span class="es">Catálogo de Netflix con Streamlit</span><span class="en">Netflix catalog with Streamlit</span></h3>
+          <p><span class="es">Aplicación interactiva para explorar 8,807 títulos con filtros, indicadores y gráficas.</span><span class="en">Interactive app to explore 8,807 titles with filters, indicators and charts.</span></p>
+          <div class="tags"><span>Python</span><span>Pandas</span><span>Streamlit</span></div>
+          <button class="btn-detalles" type="button" data-abrir="netflix"><span class="es">Ver detalles</span><span class="en">View details</span></button>
+        </div>
+      </article>
+      <article class="tarjeta">
+        <div class="captura" data-abrir="sql"><img src="img/sql-esquema.png" alt="Base de datos del catálogo con SQL"></div>
+        <div class="cuerpo">
+          <span class="anio">2026</span>
+          <h3><span class="es">Base de datos del catálogo con SQL</span><span class="en">Catalog database with SQL</span></h3>
+          <p><span class="es">Modelo relacional con claves, una relación de muchos a muchos y diez consultas comentadas.</span><span class="en">Relational model with keys, a many-to-many relation and ten commented queries.</span></p>
+          <div class="tags"><span>SQL</span><span>SQLite</span><span>Modelado relacional</span></div>
+          <button class="btn-detalles" type="button" data-abrir="sql"><span class="es">Ver detalles</span><span class="en">View details</span></button>
+        </div>
+      </article>
+      <article class="tarjeta">
+        <div class="captura" data-abrir="redes"><img src="img/redes-topologia-completa.png" alt="Integración de red universitaria"></div>
+        <div class="cuerpo">
+          <span class="anio">2025 – 2026</span>
+          <h3><span class="es">Integración de red universitaria</span><span class="en">University network integration</span></h3>
+          <p><span class="es">Laboratorio en equipo con cuatro routers: VLAN, DHCP, OSPF y NAT con salida a Internet.</span><span class="en">Team lab with four routers: VLANs, DHCP, OSPF and NAT with Internet access.</span></p>
+          <div class="tags"><span>VLAN</span><span>OSPF</span><span>NAT</span></div>
+          <button class="btn-detalles" type="button" data-abrir="redes"><span class="es">Ver detalles</span><span class="en">View details</span></button>
+        </div>
+      </article>
+      <article class="tarjeta">
+        <div class="captura" data-abrir="svd"><img src="img/svd-reconstrucciones.png" alt="Compresión de imágenes con SVD y PCA"></div>
+        <div class="cuerpo">
+          <span class="anio">2025 – 2026</span>
+          <h3><span class="es">Compresión de imágenes con SVD y PCA</span><span class="en">Image compression with SVD and PCA</span></h3>
+          <p><span class="es">Compresión de una imagen RGB midiendo error, varianza explicada y tasa de compresión.</span><span class="en">Compression of an RGB image, measuring error, explained variance and compression ratio.</span></p>
+          <div class="tags"><span>Python</span><span>SVD</span><span>PCA</span></div>
+          <button class="btn-detalles" type="button" data-abrir="svd"><span class="es">Ver detalles</span><span class="en">View details</span></button>
+        </div>
+      </article>
+      <article class="tarjeta">
+        <div class="captura sin-imagen" data-abrir="cpp"><span style="font-size:58px;font-weight:800;letter-spacing:-2px;color:var(--acento2);font-family:monospace;">C++</span></div>
+        <div class="cuerpo">
+          <span class="anio">2026</span>
+          <h3><span class="es">Estructuras de datos y algoritmos en C++</span><span class="en">Data structures and algorithms in C++</span></h3>
+          <p><span class="es">Integración de estructuras de datos y algoritmos de búsqueda, backtracking y recursión, implementados desde cero.</span><span class="en">Integration of data structures and search, backtracking and recursion algorithms, built from scratch.</span></p>
+          <div class="tags"><span>C++</span><span>Estructuras de datos</span><span>Algoritmos</span></div>
+          <button class="btn-detalles" type="button" data-abrir="cpp"><span class="es">Ver detalles</span><span class="en">View details</span></button>
+        </div>
+      </article>
+      <article class="tarjeta">
+        <div class="captura" data-abrir="juego"><img src="img/juego-portada.png" alt="Arte conceptual del juego"></div>
+        <div class="cuerpo">
+          <span class="anio"><span class="es">2026 · en desarrollo</span><span class="en">2026 · in development</span></span>
+          <h3><span class="es">Metroidvania 2D (en desarrollo)</span><span class="en">2D Metroidvania (in development)</span></h3>
+          <p><span class="es">Juego de acción y exploración con elementos de Soulslike, en fase de diseño y preproducción. Combate técnico, un mundo interconectado y una muerte con consecuencias.</span><span class="en">Action-exploration game with Soulslike elements, in design and pre-production. Technical combat, an interconnected world and death with consequences.</span></p>
+          <div class="tags"><span>Unity</span><span>Diseño de juegos</span><span>Metroidvania</span></div>
+          <button class="btn-detalles" type="button" data-abrir="juego"><span class="es">Ver detalles</span><span class="en">View details</span></button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Ventana de detalles -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <div class="modal-caja">
+      <button class="modal-cerrar" id="modal-cerrar" type="button" aria-label="Cerrar">×</button>
+      <div class="carrusel">
+        <div class="carrusel-vista"><img id="carrusel-img" src="" alt=""></div>
+        <button class="carrusel-flecha izq" id="carrusel-antes" type="button" aria-label="Anterior">‹</button>
+        <button class="carrusel-flecha der" id="carrusel-despues" type="button" aria-label="Siguiente">›</button>
+        <div class="carrusel-pie">
+          <span id="carrusel-puntos"></span>
+          <span class="carrusel-contador" id="carrusel-contador"></span>
+        </div>
+      </div>
+      <div class="modal-cuerpo" id="modal-cuerpo"></div>
+    </div>
+  </div>
+
+  <!-- Arsenal técnico -->
+  <section id="habilidades">
+    <div class="encabezado-seccion">
+      <span class="etiq-sec"><span class="es">Arsenal técnico</span><span class="en">Tech stack</span></span>
+      <h2><span class="es">Habilidades</span><span class="en">Skills</span></h2>
+    </div>
+    <div class="arsenal">
+      <div class="bloque">
+        <div class="bloque-cabecera"><span class="icono-caja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="20" x2="6" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="18" y1="20" x2="18" y2="9"/></svg></span><h3><span class="es">Análisis de datos</span><span class="en">Data analysis</span></h3></div>
+        <p><span class="es">Limpieza, agrupación, visualización y aplicaciones interactivas.</span><span class="en">Cleaning, grouping, visualization and interactive apps.</span></p>
+        <div class="chips"><span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">Matplotlib</span><span class="chip">Seaborn</span><span class="chip">Streamlit</span><span class="chip">SciPy</span><span class="chip">Plotly</span><span class="chip">PCA</span><span class="chip">SVD</span><span class="chip">Dashboards Interactivos</span></div>
+      </div>
+      <div class="bloque">
+        <div class="bloque-cabecera"><span class="icono-caja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><h3><span class="es">Bases de Datos</span><span class="en">Databases</span></h3></div>
+        <p><span class="es">Modelado relacional, consultas y diseño de tablas con claves.</span><span class="en">Relational modeling, queries and table design with keys.</span></p>
+        <div class="chips"><span class="chip">SQL</span><span class="chip">SQLite</span><span class="chip">MySQL</span><span class="chip">PostgreSQL</span><span class="chip">Modelado Dimensional</span><span class="chip">Modelo Relacional</span><span class="chip">Optimización de Consultas</span><span class="chip">PL/SQL</span></div>
+      </div>
+      <div class="bloque">
+        <div class="bloque-cabecera"><span class="icono-caja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M12 7.5v4M12 11.5l-5 5M12 11.5l5 5"/></svg></span><h3><span class="es">Redes, Seguridad y Criptografía</span><span class="en">Networking, Security & Cryptography</span></h3></div>
+        <p><span class="es">Configuración de redes con equipos reales y simulados, y conocimiento parcial en seguridad y cifrado.</span><span class="en">Network configuration with real and simulated equipment, and partial knowledge of security and encryption.</span></p>
+        <div class="chips"><span class="chip">Topologías/Segmentación</span><span class="chip">Enrutamiento</span><span class="chip">Monitoreo/Análisis de Tráfico</span><span class="chip">MikroTik</span><span class="chip">Filtrado/Firewalls</span><span class="chip">Criptografía</span><span class="chip">PKI/Certificados</span><span class="chip">Protocolos seguros</span><span class="chip">Firmas digitales</span></div>
+      </div>
+      <div class="bloque">
+        <div class="bloque-cabecera"><span class="icono-caja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 7 3 12 8 17"/><polyline points="16 7 21 12 16 17"/><line x1="14" y1="4" x2="10" y2="20"/></svg></span><h3><span class="es">Lenguajes de Programación</span><span class="en">Programming Languages</span></h3></div>
+        <p><span class="es">Programas en distintos lenguajes, desde algoritmos hasta aplicaciones.</span><span class="en">Programs in several languages, from algorithms to applications.</span></p>
+        <div class="chips"><span class="chip">C++</span><span class="chip">Python</span><span class="chip">C</span><span class="chip">JavaScript (ES6+)</span><span class="chip">Java</span><span class="chip">HTML5 & CSS3</span><span class="chip">C#</span></div>
+      </div>
+      <div class="bloque">
+        <div class="bloque-cabecera"><span class="icono-caja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="10" rx="5"/><path d="M7 12h4M9 10v4M15 13h.01M17 11h.01"/></svg></span><h3><span class="es">Desarrollo de videojuegos</span><span class="en">Game development</span></h3></div>
+        <p><span class="es">Diseño de un Metroidvania en desarrollo, desde el documento de diseño hasta el prototipo.</span><span class="en">Design of a Metroidvania in development, from the design document to the prototype.</span></p>
+        <div class="chips"><span class="chip">Unity</span><span class="chip">Game Design (GDD)</span><span class="chip">Diseño de Mecánicas/Enemigos</span><span class="chip">Narrativa/Worldbuilding</span><span class="chip">Prototipado</span></div>
+      </div>
+      <div class="bloque">
+        <div class="bloque-cabecera"><span class="icono-caja"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5z"/></svg></span><h3><span class="es">Herramientas y Frameworks</span><span class="en">Tools & Frameworks</span></h3></div>
+        <p><span class="es">Herramientas de trabajo, control de versiones y simulación.</span><span class="en">Work tools, version control and simulation.</span></p>
+        <div class="chips"><span class="chip">Git/Github</span><span class="chip">VirtualBox</span><span class="chip">Jupyter/Colab</span><span class="chip">Cisco</span><span class="chip">Wireshark</span><span class="chip">Packet Tracer</span><span class="chip">Linux / Bash</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formación & Certificaciones -->
+  <section id="trayectoria">
+    <div class="encabezado-seccion">
+      <span class="etiq-sec"><span class="es">Trayectoria</span><span class="en">Background</span></span>
+      <h2><span class="es">Formación &amp; Certificaciones</span><span class="en">Education &amp; Certifications</span></h2>
+    </div>
+
+    <div class="subbloque">
+      <span class="sub-etiqueta"><span class="es">Formación</span><span class="en">Education</span></span>
+      <div class="linea-tiempo">
+        <div class="item">
+          <h3><span class="es">Licenciatura en Ciencias de la Computación</span><span class="en">Bachelor's in Computer Science</span></h3>
+          <p class="meta">Universidad Central de Venezuela · <span class="es">Facultad de Ciencias</span><span class="en">Faculty of Sciences</span></p>
+          <p class="meta"><span class="es">En curso · Caracas</span><span class="en">In progress · Caracas</span></p>
+          <p class="descripcion-formacion">
+            <span class="es">Durante la carrera he construido una base sólida en Estructuras de Datos y Algoritmos, Programación Orientada a Objetos, Bases de Datos Relacionales, Redes de Computadoras y Seguridad.</span>
+            <span class="en">Throughout the program I have built a solid foundation in Data Structures and Algorithms, Object-Oriented Programming, Relational Databases, Computer Networks and Security.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="subbloque">
+      <span class="sub-etiqueta"><span class="es">Certificaciones</span><span class="en">Certifications</span></span>
+      <div class="linea-tiempo">
+        <div class="item">
+          <h3><span class="es">Taller «WiFi al alcance de todos»</span><span class="en">"WiFi for everyone" workshop</span> · GitHub Campus Expert</h3>
+          <p class="meta"><span class="es">Febrero 2026</span><span class="en">February 2026</span></p>
+          <p>
+            <span class="es">Introducción a las redes inalámbricas y móviles, con configuración de equipos MikroTik y antenas.</span>
+            <span class="en">Introduction to wireless and mobile networks, with configuration of MikroTik devices and antennas.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto" class="contacto">
+    <span class="etiq-sec"><span class="es">Contacto</span><span class="en">Contact</span></span>
+    <h2 class="titulo-contacto"><span class="es">Listo para ayudarte en tus proyectos o resolver cualquier tipo de problema</span><span class="en">Ready to help with your projects or solve any kind of problem</span></h2>
+    <p class="descripcion">
+      <span class="es">Abierto a oportunidades de desarrollo de software, redes de computadoras, seguridad en redes, bases de datos y programación, como desarrollador junior, desarrollador de videojuegos o en proyectos por contrato. Disponible para trabajar de manera remota o híbrida.</span>
+      <span class="en">Open to opportunities in software development, computer networks, network security, databases and programming, as a junior developer, video game developer, or on contract projects. Available to work remotely or in a hybrid model.</span>
+    </p>
+    <p class="ubicacion-contacto">Caracas, Venezuela</p>
+    <div class="botones centro contacto-botones">
+      <a class="btn principal" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=franyerrioss007@gmail.com" target="_blank" rel="noopener"><svg class="trazo" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg> franyerrioss007@gmail.com</a>
+      <button class="btn" id="copiar-correo" type="button"><svg class="trazo" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> <span class="es">Copiar correo</span><span class="en">Copy email</span></button>
+      <a class="btn" href="https://github.com/FranyerP07" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.78 0 12.292c0 5.211 3.438 9.63 8.205 11.188.6.111.82-.254.82-.567 0-.28-.01-1.022-.015-2.005-3.338.711-4.042-1.582-4.042-1.582-.546-1.361-1.335-1.723-1.335-1.723-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.823 2.809 1.297 3.495.993.108-.776.417-1.297.76-1.596-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.5 11.5 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.216.682.825.566C20.565 21.917 24 17.499 24 12.292 24 5.78 18.627.5 12 .5z"/></svg> GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/franyer-p%C3%A9rez-1b569b450" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> LinkedIn</a>
+      <a class="btn" href="https://t.me/FranyerP07" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg> @FranyerP07</a>
+    </div>
+    <div class="botones centro" style="margin-top:26px;">
+      <a class="btn principal boton-cv" href="CV_Franyer_Perez.pdf" download="CV Franyer Pérez.pdf"><span class="es">Descargar CV</span><span class="en">Download CV</span></a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="contenedor">
+    © 2026 Franyer Pérez · Caracas, Venezuela
+  </div>
+</footer>
+
+<script>
+  const frases = {
+    es: [
+      "Ciberseguridad & Cifrado de Datos",
+      "Manejo y Diseño de Bases de Datos",
+      "Manejo y Diseño de Redes de Computadoras",
+      "Programación y Estructuras de Datos",
+      "Desarrollo de Videojuegos"
+    ],
+    en: [
+      "Cybersecurity & Data Encryption",
+      "Database Management & Design",
+      "Computer Network Management & Design",
+      "Programming & Data Structures",
+      "Video Game Development"
+    ]
+  };
+
+  const cuerpo = document.body;
+  const raiz = document.documentElement;
+  const rotador = document.getElementById('rotador');
+  const botonIdioma = document.getElementById('cambiar-idioma');
+  const botonTema = document.getElementById('cambiar-tema');
+  let indice = 0;
+
+  function idiomaActual() { return cuerpo.classList.contains('en') ? 'en' : 'es'; }
+
+  function mostrar() { rotador.textContent = frases[idiomaActual()][indice]; }
+
+  // Rotación de frases con desvanecimiento
+  setInterval(() => {
+    rotador.classList.add('salida');
+    setTimeout(() => {
+      indice = (indice + 1) % frases.es.length;
+      mostrar();
+      rotador.classList.remove('salida');
+    }, 350);
+  }, 2600);
+
+
+  // Datos de cada proyecto. Los textos se muestran según el idioma elegido.
+  const proyectos = {
+    netflix: {
+      titulo: { es: "Catálogo de Netflix con Streamlit", en: "Netflix catalog with Streamlit" },
+      anio: "2026",
+      imagenes: ["img/netflix-resumen.png", "img/netflix-filtros.png", "img/netflix-tabla.png", "img/netflix-graficas.png"],
+      problema: {
+        es: "Quería explorar el catálogo de Netflix con preguntas concretas y poder compartir el análisis como una aplicación que cualquiera pueda abrir.",
+        en: "I wanted to explore the Netflix catalog with specific questions and share the analysis as an app anyone can open."
+      },
+      herramientas: [
+        { n: "Python", es: "Lenguaje base del análisis y de la aplicación.", en: "Core language for the analysis and the app." },
+        { n: "Pandas", es: "Carga, limpieza y agrupación de los 8,807 títulos.", en: "Loading, cleaning and grouping the 8,807 titles." },
+        { n: "Streamlit", es: "Convierte el análisis en una aplicación web con filtros.", en: "Turns the analysis into a web app with filters." },
+        { n: "Matplotlib y Seaborn", es: "Gráficas del análisis exploratorio.", en: "Charts for the exploratory analysis." }
+      ],
+      decisiones: [
+        { es: "Rellené los datos faltantes con etiquetas como «Desconocido» o «Sin dato», en lugar de borrar filas, para no perder títulos.", en: "I filled missing data with labels such as 'Desconocido' or 'Sin dato' instead of dropping rows, so no titles were lost." },
+        { es: "Separé los países que venían juntos en una misma celda, para contar cada país por separado.", en: "I split countries that came together in one cell, so each country is counted on its own." },
+        { es: "Usé st.cache_data para que la aplicación no recalcule los datos cada vez que se mueve un filtro.", en: "I used st.cache_data so the app does not recalculate the data every time a filter moves." },
+        { es: "Incluí el CSV en el repositorio para que la aplicación cargue sola al abrirla.", en: "I included the CSV in the repository so the app loads on its own when opened." }
+      ],
+      enlace: null
+    },
+    sql: {
+      titulo: { es: "Base de datos del catálogo con SQL", en: "Catalog database with SQL" },
+      anio: "2026",
+      imagenes: ["img/sql-esquema.png", "img/sql-consulta.png", "img/sql-resultado.png", "img/sql-dashboard.png"],
+      problema: {
+        es: "Quería modelar los datos del catálogo como una base relacional real, con claves y consultas que respondan preguntas concretas.",
+        en: "I wanted to model the catalog data as a real relational database, with keys and queries that answer specific questions."
+      },
+      herramientas: [
+        { n: "SQL", es: "Lenguaje para crear las tablas y consultar los datos.", en: "Language used to create the tables and query the data." },
+        { n: "SQLite", es: "Motor de base de datos que viene incluido con Python.", en: "Database engine included with Python." },
+        { n: "Modelado relacional", es: "Diseño de tablas, claves primarias y foráneas.", en: "Table design, primary and foreign keys." }
+      ],
+      decisiones: [
+        { es: "Un título puede tener varios países, así que modelé esa relación con una tabla intermedia de muchos a muchos.", en: "A title can have several countries, so I modeled that relation with a many-to-many junction table." },
+        { es: "Activé las claves foráneas con PRAGMA para que la base rechace datos que rompan la relación entre tablas.", en: "I enabled foreign keys with PRAGMA so the database rejects data that breaks the relation between tables." },
+        { es: "Usé CHECK para limitar el tipo de título a dos valores válidos.", en: "I used CHECK to limit the title type to two valid values." },
+        { es: "Escribí consultas con CASE para calcular, en una sola consulta, el porcentaje de series por país.", en: "I wrote queries with CASE to compute the share of TV shows per country in a single query." }
+      ],
+      enlace: null
+    },
+    redes: {
+      titulo: { es: "Integración de red universitaria", en: "University network integration" },
+      anio: "2025 – 2026",
+      imagenes: ["img/redes-topologia-completa.png", "img/redes-subinterfaces.png", "img/redes-dhcp.png", "img/redes-rutas.png"],
+      problema: {
+        es: "Conectar cuatro facultades a un router central, con direcciones automáticas, rutas que se aprenden solas y salida a Internet.",
+        en: "Connect four faculties to a central router, with automatic addresses, routes learned automatically and Internet access."
+      },
+      herramientas: [
+        { n: "Cisco IOS", es: "Sistema operativo de los routers y switches del laboratorio.", en: "Operating system of the lab's routers and switches." },
+        { n: "VLAN y 802.1Q", es: "Separan cada facultad en dos redes sobre un mismo enlace.", en: "Separate each faculty into two networks over one link." },
+        { n: "DHCP", es: "Entrega direcciones automáticas a los equipos de cada VLAN.", en: "Hands out automatic addresses to the devices in each VLAN." },
+        { n: "OSPF", es: "Protocolo que intercambia rutas entre los routers.", en: "Protocol that exchanges routes between routers." },
+        { n: "NAT (PAT)", es: "Permite que los equipos internos salgan a Internet.", en: "Lets internal devices reach the Internet." },
+        { n: "GNS3 y Wireshark", es: "Simulación del laboratorio y análisis de tráfico.", en: "Lab simulation and traffic analysis." }
+      ],
+      decisiones: [
+        { es: "Usé un solo enlace físico con subinterfaces (router-on-a-stick) para ahorrar interfaces en cada router.", en: "I used a single physical link with subinterfaces (router-on-a-stick) to save interfaces on each router." },
+        { es: "Reservé la dirección .10 de cada red para equipos con IP fija y excluí las primeras 20 direcciones del DHCP.", en: "I reserved address .10 in each network for devices with a fixed IP and excluded the first 20 addresses from DHCP." },
+        { es: "Configuré OSPF en el área 0 para que cada router aprenda las rutas de las demás facultades sin rutas manuales.", en: "I configured OSPF in area 0 so each router learns the other faculties' routes without manual routes." },
+        { es: "Escribí un script en Python con la librería ipaddress que calcula el plan de direcciones a partir de las redes.", en: "I wrote a Python script with the ipaddress library that computes the address plan from the networks." }
+      ],
+      enlace: null
+    },
+    svd: {
+      titulo: { es: "Compresión de imágenes con SVD y PCA", en: "Image compression with SVD and PCA" },
+      anio: "2025 – 2026",
+      imagenes: ["img/svd-original.png", "img/svd-reconstrucciones.png", "img/svd-metricas.png", "img/svd-error.png"],
+      problema: {
+        es: "Comprimir una imagen a color conservando la mayor parte de la información, y medir el costo de cada compromiso entre calidad y tamaño.",
+        en: "Compress a color image while keeping most of the information, and measure the cost of each trade-off between quality and size."
+      },
+      herramientas: [
+        { n: "NumPy", es: "Cálculo de la descomposición SVD y de las matrices.", en: "Computes the SVD and the matrices." },
+        { n: "Matplotlib", es: "Gráficas de las reconstrucciones y de las métricas.", en: "Charts for the reconstructions and the metrics." },
+        { n: "Pillow y Requests", es: "Cargar la imagen desde un enlace público.", en: "Load the image from a public link." },
+        { n: "Álgebra lineal", es: "Base teórica de SVD y PCA.", en: "Theoretical basis for SVD and PCA." }
+      ],
+      decisiones: [
+        { es: "Centré cada canal de color antes de aplicar el SVD, para que el análisis de varianza tenga sentido.", en: "I centered each color channel before applying the SVD, so the variance analysis makes sense." },
+        { es: "Medí el error relativo y la energía explicada, y no solo la vista de la imagen.", en: "I measured relative error and explained energy, not just how the image looks." },
+        { es: "Comparé k = 5, 20, 50, 100 y 200 para ver el punto en el que la calidad ya no justifica el tamaño.", en: "I compared k = 5, 20, 50, 100 and 200 to see the point where quality no longer justifies the size." },
+        { es: "Calculé la tasa de compresión con la fórmula de almacenamiento de los componentes.", en: "I computed the compression ratio with the storage formula of the components." }
+      ],
+      enlace: null
+    },
+    juego: {
+      titulo: { es: "Metroidvania 2D (en desarrollo)", en: "2D Metroidvania (in development)" },
+      anio: { es: "2026 · en desarrollo", en: "2026 · in development" },
+      imagenes: ["img/juego-portada.png", "img/juego-mapa.png", "img/juego-protagonista.png", "img/juego-enemigos.png"],
+      problema: {
+        es: "Un híbrido de ángel y demonio que, tras despertar en el infierno, explora un mundo interconectado con combate técnico y altares de descanso que regulan el progreso.",
+        en: "A hybrid of angel and demon who, after waking up in hell, explores an interconnected world with technical combat and rest altars that regulate progress."
+      },
+      estado: {
+        es: "En preproducción: el documento de diseño está en desarrollo y el proyecto ya está creado en Unity. Todavía no hay prototipo jugable.",
+        en: "In pre-production: the design document is in progress and the Unity project is set up. There is no playable prototype yet."
+      },
+      herramientas: [
+        { n: "Unity", es: "Motor del proyecto, donde se construyen escenas, personajes y mecánicas.", en: "Project engine, where scenes, characters and mechanics are built." },
+        { n: "Documento de diseño (GDD)", es: "Define mecánicas, pilares y estructura del mundo antes de programar.", en: "Defines mechanics, pillars and world structure before coding." },
+        { n: "Arte conceptual", es: "Personajes, enemigos y mapa, que definen el estilo y la estructura del mundo.", en: "Concept art of characters, enemies and map, which define the style and structure of the world." }
+      ],
+      decisiones: [
+        { es: "Exploración que recompensa: atajos y secretos que invitan a regresar a zonas anteriores.", en: "Rewarding exploration: shortcuts and secrets that invite players back to earlier zones." },
+        { es: "Combate técnico y justo: las derrotas deben enseñar patrones, no castigar al azar.", en: "Fair technical combat: defeats should teach patterns, not punish at random." },
+        { es: "Cada elección pesa: las decisiones afectan la jugabilidad, los personajes, el mundo y el desenlace.", en: "Every choice matters: decisions affect gameplay, characters, the world and the ending." },
+        { es: "Muerte con recuperación: al caer dejas un espectro que debes vencer para recuperar lo perdido.", en: "Death with recovery: when you fall, you leave a specter you must defeat to recover what you lost." },
+        { es: "Horror bíblico y misterio: simbolismo religioso y preguntas abiertas que invitan a investigar.", en: "Biblical horror and mystery: religious symbolism and open questions that invite investigation." }
+      ],
+      enlace: null
+    },
+    cpp: {
+      titulo: { es: "Estructuras de datos y algoritmos en C++", en: "Data structures and algorithms in C++" },
+      anio: "2026",
+      imagenes: ["img/cpp-lista.png", "img/cpp-grafo.png", "img/cpp-n-reinas.png"],
+      problema: {
+        es: "Implementar las estructuras y algoritmos básicos desde cero, sin depender de los contenedores de la STL, y probarlos en un programa interactivo.",
+        en: "Implement the basic structures and algorithms from scratch, without relying on STL containers, and test them in an interactive program."
+      },
+      herramientas: [
+        { n: "Lista enlazada", es: "Lista simplemente enlazada con inserción al inicio o al final, eliminación y búsqueda.", en: "Singly linked list with insertion at the start or end, deletion and search." },
+        { n: "Pila y cola", es: "Pila (LIFO) y cola (FIFO), ambas con nodos enlazados.", en: "Stack (LIFO) and queue (FIFO), both built with linked nodes." },
+        { n: "Árbol binario de búsqueda", es: "Inserción, búsqueda, recorrido inorden y cálculo de altura.", en: "Insertion, search, inorder traversal and height calculation." },
+        { n: "Búsqueda en grafos (BFS y DFS)", es: "Recorridos por niveles con cola (BFS) y en profundidad con pila (DFS).", en: "Level-order traversal with a queue (BFS) and depth-first traversal with a stack (DFS)." },
+        { n: "Backtracking y recursión", es: "Problema de las N reinas: explora posiciones, retrocede al encontrar un callejón sin salida y cuenta las soluciones.", en: "N queens problem: explores positions, backtracks at dead ends and counts the solutions." },
+        { n: "Makefile", es: "Compila el proyecto con advertencias activadas.", en: "Builds the project with warnings enabled." }
+      ],
+      decisiones: [
+        { es: "Cada estructura libera su memoria en el destructor y deshabilité las copias para no liberar la misma memoria dos veces.", en: "Each structure frees its memory in the destructor, and I disabled copies so the same memory is never freed twice." },
+        { es: "El DFS es iterativo, con una pila explícita, para no depender de la recursión profunda.", en: "DFS is iterative, with an explicit stack, so it does not depend on deep recursion." },
+        { es: "Las N reinas revisan la columna y las dos diagonales antes de colocar cada reina, con backtracking.", en: "N queens checks the column and both diagonals before placing each queen, using backtracking." },
+        { es: "Verifiqué el programa con entradas programadas: 92 soluciones para 8 reinas y 724 para 10.", en: "I verified the program with scripted inputs: 92 solutions for 8 queens and 724 for 10." }
+      ],
+      enlace: null
+    }
+  };
+
+  // Ventana de detalles
+  const modal = document.getElementById('modal');
+  const imgCarrusel = document.getElementById('carrusel-img');
+  const puntos = document.getElementById('carrusel-puntos');
+  const contador = document.getElementById('carrusel-contador');
+  const cuerpoModal = document.getElementById('modal-cuerpo');
+  let actual = null;
+  let imagenActual = 0;
+
+  function pintarCarrusel() {
+    const lista = proyectos[actual].imagenes;
+    imgCarrusel.src = lista[imagenActual];
+    imgCarrusel.alt = proyectos[actual].titulo[idiomaActual()];
+    contador.textContent = (imagenActual + 1) + ' / ' + lista.length;
+    puntos.innerHTML = '';
+    lista.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'carrusel-punto' + (i === imagenActual ? ' activo' : '');
+      b.setAttribute('aria-label', 'Imagen ' + (i + 1));
+      b.addEventListener('click', () => { imagenActual = i; pintarCarrusel(); });
+      puntos.appendChild(b);
+    });
+    const unica = lista.length < 2;
+    document.getElementById('carrusel-antes').style.display = unica ? 'none' : '';
+    document.getElementById('carrusel-despues').style.display = unica ? 'none' : '';
+  }
+
+  function pintarCuerpo() {
+    const p = proyectos[actual];
+    const l = idiomaActual();
+    const herramientas = p.herramientas.map(h => `<li><strong>${h.n}</strong><br><span>${h[l]}</span></li>`).join('');
+    const decisiones = p.decisiones.map(d => `<li>${d[l]}</li>`).join('');
+    const enlace = p.enlace
+      ? `<a class="btn principal modal-enlace" href="${p.enlace.url}" target="_blank" rel="noopener">${p.enlace[l]}</a><p class="modal-nota">${p.enlace.nota[l]}</p>`
+      : '';
+    cuerpoModal.innerHTML = `
+      <span class="anio">${typeof p.anio === 'string' ? p.anio : p.anio[l]}</span>
+      <h3 id="modal-titulo">${p.titulo[l]}</h3>
+      <h4>${l === 'es' ? 'Problema' : 'Problem'}</h4>
+      <p class="problema">${p.problema[l]}</p>
+      ${p.estado ? `<p class="modal-nota">${p.estado[l]}</p>` : ''}
+      <h4>${l === 'es' ? 'Herramientas usadas' : 'Tools used'}</h4>
+      <ul class="lista-herramientas">${herramientas}</ul>
+      <h4>${l === 'es' ? 'Decisiones técnicas' : 'Technical decisions'}</h4>
+      <ul class="lista-decisiones">${decisiones}</ul>
+      ${enlace}`;
+  }
+
+  function abrir(id) {
+    actual = id;
+    imagenActual = 0;
+    pintarCarrusel();
+    pintarCuerpo();
+    modal.classList.add('abierto');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function cerrar() {
+    modal.classList.remove('abierto');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-abrir]').forEach(el => {
+    el.addEventListener('click', () => abrir(el.getAttribute('data-abrir')));
+  });
+  document.getElementById('modal-cerrar').addEventListener('click', cerrar);
+  modal.addEventListener('click', e => { if (e.target === modal) cerrar(); });
+  document.getElementById('carrusel-antes').addEventListener('click', () => {
+    const n = proyectos[actual].imagenes.length;
+    imagenActual = (imagenActual - 1 + n) % n; pintarCarrusel();
+  });
+  document.getElementById('carrusel-despues').addEventListener('click', () => {
+    const n = proyectos[actual].imagenes.length;
+    imagenActual = (imagenActual + 1) % n; pintarCarrusel();
+  });
+  document.addEventListener('keydown', e => {
+    if (!modal.classList.contains('abierto')) return;
+    if (e.key === 'Escape') cerrar();
+    if (e.key === 'ArrowLeft') document.getElementById('carrusel-antes').click();
+    if (e.key === 'ArrowRight') document.getElementById('carrusel-despues').click();
+  });
+
+  // Idioma guardado
+  if (localStorage.getItem('idioma') === 'en') cuerpo.classList.add('en');
+  raiz.lang = idiomaActual();
+  mostrar();
+
+  botonIdioma.addEventListener('click', () => {
+    cuerpo.classList.toggle('en');
+    raiz.lang = idiomaActual();
+    localStorage.setItem('idioma', idiomaActual());
+    mostrar();
+    if (modal.classList.contains('abierto')) { pintarCarrusel(); pintarCuerpo(); }
+  });
+
+  // Tema claro u oscuro guardado
+  if (localStorage.getItem('tema') === 'claro') raiz.setAttribute('data-tema', 'claro');
+  botonTema.addEventListener('click', () => {
+    const claro = raiz.getAttribute('data-tema') === 'claro';
+    raiz.setAttribute('data-tema', claro ? 'oscuro' : 'claro');
+    localStorage.setItem('tema', claro ? 'oscuro' : 'claro');
+  });
+
+  // Copiar el correo al portapapeles
+  const botonCopiar = document.getElementById('copiar-correo');
+  if (botonCopiar) {
+    botonCopiar.addEventListener('click', () => {
+      navigator.clipboard.writeText('franyerrioss007@gmail.com').then(() => {
+        const original = botonCopiar.innerHTML;
+        botonCopiar.innerHTML = '✓ ' + (idiomaActual() === 'en' ? 'Copied!' : '¡Copiado!');
+        setTimeout(() => { botonCopiar.innerHTML = original; }, 2000);
+      });
+    });
+  }
+
+  // Botones de CV: descargan la versión del idioma activo
+  function actualizarCv() {
+    const enIngles = document.body.classList.contains('en');
+    document.querySelectorAll('.boton-cv').forEach(a => {
+      if (enIngles) {
+        a.setAttribute('href', 'CV_Franyer_Perez_EN.pdf');
+        a.setAttribute('download', 'CV Franyer Perez EN.pdf');
+      } else {
+        a.setAttribute('href', 'CV_Franyer_Perez.pdf');
+        a.setAttribute('download', 'CV Franyer Pérez.pdf');
+      }
+    });
+  }
+  actualizarCv();
+  document.getElementById('cambiar-idioma').addEventListener('click', () => setTimeout(actualizarCv, 0));
+</script>
+</body>
+</html>
